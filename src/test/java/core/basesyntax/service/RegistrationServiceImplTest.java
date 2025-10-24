@@ -25,7 +25,7 @@ class RegistrationServiceImplTest {
         expected.setLogin("Mark");
         expected.setPassword("123456789");
         expected.setAge(20);
-        assertThrows(RuntimeException.class,
+        assertThrows(RegistrationServiceImpl.ShortLoginException.class,
                 () -> registrationService.register(expected)); // change to custom exception
     }
 
@@ -35,7 +35,7 @@ class RegistrationServiceImplTest {
         expected.setLogin("Oleksandr2");
         expected.setPassword("1234");
         expected.setAge(20);
-        assertThrows(RuntimeException.class,
+        assertThrows(RegistrationServiceImpl.ShortPasswordException.class,
                 () -> registrationService.register(expected)); // change to custom exception
     }
 
@@ -45,7 +45,7 @@ class RegistrationServiceImplTest {
         expected.setLogin("Oleksandr3");
         expected.setPassword("123456789");
         expected.setAge(16);
-        assertThrows(RuntimeException.class,
+        assertThrows(RegistrationServiceImpl.UnderAgeUserException.class,
                 () -> registrationService.register(expected)); // change to custom exception
     }
 
@@ -54,7 +54,7 @@ class RegistrationServiceImplTest {
         User expected = new User();
         expected.setPassword("123456789");
         expected.setAge(20);
-        assertThrows(NullPointerException.class,
+        assertThrows(RegistrationServiceImpl.NullLoginException.class,
                 () -> registrationService.register(expected));
     }
 
@@ -63,7 +63,7 @@ class RegistrationServiceImplTest {
         User expected = new User();
         expected.setLogin("Oleksandr4");
         expected.setAge(20);
-        assertThrows(NullPointerException.class,
+        assertThrows(RegistrationServiceImpl.NullPasswordException.class,
                 () -> registrationService.register(expected));
     }
 
@@ -72,7 +72,7 @@ class RegistrationServiceImplTest {
         User expected = new User();
         expected.setLogin("Oleksandr5");
         expected.setPassword("123456789");
-        assertThrows(NullPointerException.class,
+        assertThrows(RegistrationServiceImpl.NullAgeException.class,
                 () -> registrationService.register(expected));
     }
 
@@ -83,7 +83,7 @@ class RegistrationServiceImplTest {
         expected.setPassword("123456789");
         expected.setAge(20);
         registrationService.register(expected);
-        assertThrows(RuntimeException.class,
+        assertThrows(RegistrationServiceImpl.UserAlreadyInSystemException.class,
                 () -> registrationService.register(expected)); // change to custom exception
     }
 }
