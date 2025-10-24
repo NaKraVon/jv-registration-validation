@@ -6,6 +6,8 @@ import core.basesyntax.model.User;
 
 public class RegistrationServiceImpl implements RegistrationService {
     private final StorageDao storageDao = new StorageDaoImpl();
+    private final static int MIN_LENGTH = 6;
+    private final static int MIN_AGE = 18;
 
     @Override
     public User register(User user) {
@@ -14,9 +16,8 @@ public class RegistrationServiceImpl implements RegistrationService {
                 && storageDao.get(user.getLogin()) == null) {
             storageDao.add(user);
             return user;
-        } else {
-            throw new UserAlreadyInSystemException("User already registered");
         }
+        throw new UserAlreadyInSystemException("User already registered");
     }
 
     public boolean nullCheck(User user) {
@@ -33,31 +34,31 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     public boolean criteriaCheck(User user) {
-        if (user.getLogin().length() < 6) {
+        if (user.getLogin().length() < MIN_LENGTH) {
             throw new ShortLoginException("Login is too short");
         }
-        if (user.getPassword().length() < 6) {
+        if (user.getPassword().length() < MIN_LENGTH) {
             throw new ShortPasswordException("Password is too short");
         }
-        if (user.getAge() < 18) {
+        if (user.getAge() < MIN_AGE) {
             throw new UnderAgeUserException("User is under age");
         }
         return true;
     }
 
-    public static class NullLoginException extends NullPointerException {
+    public static class NullLoginException extends RuntimeException {
         public NullLoginException(String message) {
             super(message);
         }
     }
 
-    public static class NullPasswordException extends NullPointerException {
+    public static class NullPasswordException extends RuntimeException {
         public NullPasswordException(String message) {
             super(message);
         }
     }
 
-    public static class NullAgeException extends NullPointerException {
+    public static class NullAgeException extends RuntimeException {
         public NullAgeException(String message) {
             super(message);
         }
